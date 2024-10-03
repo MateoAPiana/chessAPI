@@ -31,7 +31,7 @@ const io = new Server(server, {
 })
 
 io.on('connection', async (socket) => {
-	websocket(socket)
+	websocket(socket, io)
 })
 
 app.use(morgan('dev'))

@@ -1,5 +1,6 @@
-import type { Socket } from 'node:dgram'
+import type { Socket } from '../node_modules/socket.io/dist/index'
 import type { DefaultEventsMap } from '../node_modules/socket.io/dist/typed-events'
+import type { Server } from '../node_modules/socket.io/dist/index'
 
 let users: [string, string][] = []
 const usersWithoutOpponent: string[] = []
@@ -7,21 +8,33 @@ const usersWithoutOpponent: string[] = []
 export default async function websocket(
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
+	io: Server,
 ) {
-	console.log('a user has connected!', { users, usersWithoutOpponent })
 	const { id } = socket
 	usersWithoutOpponent.push(id)
 
 	if (usersWithoutOpponent.length >= 2) {
-		const white = Math.floor(Math.random() * 2)
-		console.log(white)
+		const whiteIndex = Math.floor(Math.random() * 2)
+		const blackIndex = whiteIndex === 0 ? 1 : 0
 
-		users.push([
-			usersWithoutOpponent[white],
-			usersWithoutOpponent[white ? 0 : 1],
-		])
-		usersWithoutOpponent.shift()
-		usersWithoutOpponent.shift()
+		const whitePlayer = usersWithoutOpponent[whiteIndex]
+		const blackPlayer = usersWithoutOpponent[blackIndex]
+
+		users.push([whitePlayer, blackPlayer])
+
+		console.log(usersWithoutOpponent)
+
+		io.to(usersWithoutOpponent[0]).emit(
+			'paired',
+			whiteIndex === 1 ? 'white' : 'black',
+		)
+
+		io.to(usersWithoutOpponent[1]).emit(
+			'paired',
+			whiteIndex === 1 ? 'black' : 'white',
+		)
+
+		usersWithoutOpponent.splice(0, 2)
 	}
 
 	socket.on('disconnect', () => {
@@ -41,8 +54,6 @@ export default async function websocket(
 			const from = [fromEnemy[0], fromEnemy[1]]
 			const to = [toEnemy[0], toEnemy[1]]
 			const index = users.findIndex((i) => i.includes(id))
-			console.log(users, index, id)
-
 			if (index !== -1)
 				socket
 					.to(users[index].filter((i) => i !== id)[0])
