@@ -51,8 +51,8 @@ export default async function websocket(
 			fromEnemy: [number, number]
 			toEnemy: [number, number]
 		}) => {
-			const from = [fromEnemy[0], fromEnemy[1]]
-			const to = [toEnemy[0], toEnemy[1]]
+			const from = [7 - fromEnemy[0], 7 - fromEnemy[1]]
+			const to = [7 - toEnemy[0], 7 - toEnemy[1]]
 			const index = users.findIndex((i) => i.includes(id))
 			if (index !== -1)
 				socket
