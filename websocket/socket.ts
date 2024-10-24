@@ -22,8 +22,6 @@ export default async function websocket(
 
 		users.push([whitePlayer, blackPlayer])
 
-		console.log(usersWithoutOpponent)
-
 		io.to(usersWithoutOpponent[0]).emit(
 			'paired',
 			whiteIndex === 1 ? 'white' : 'black',
@@ -59,5 +57,15 @@ export default async function websocket(
 					.to(users[index].filter((i) => i !== id)[0])
 					.emit('getMove', { from, to })
 		},
+	)
+
+	socket.on(
+		"end",
+		async (color: string) => {
+			const usersToEmit = users.filter(i => i.includes(id)).flat()
+			console.log(usersToEmit)
+			socket.to(usersToEmit[0]).emit("winner", color)
+			socket.to(usersToEmit[1]).emit("winner", color)
+		}
 	)
 }
