@@ -42,9 +42,7 @@ export default async function websocket(
 				)
 
 				usersWithoutOpponent.splice(0, 2)
-				console.log({ usersWithoutOpponent, users })
 			}
-			console.log({ name, id })
 		}
 	})
 
@@ -60,7 +58,6 @@ export default async function websocket(
 			const from = [7 - fromEnemy[0], 7 - fromEnemy[1]]
 			const to = [7 - toEnemy[0], 7 - toEnemy[1]]
 			const index = users.findIndex((i) => i.some(j => j.includes(id)))
-			console.log({ fromEnemy, toEnemy, index, users: users[0] })
 			if (index !== -1)
 				socket
 					.to(users[index].filter((i) => i[1] !== id)[0])
@@ -72,7 +69,6 @@ export default async function websocket(
 		"end",
 		async (color: string) => {
 			const usersToEmit = users.filter(i => !i.some(j => j.includes(id))).flat()
-			console.log(usersToEmit)
 			socket.to(usersToEmit[0]).emit("winner", color)
 			socket.to(usersToEmit[1]).emit("winner", color)
 		}
