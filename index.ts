@@ -18,7 +18,7 @@ app.use(
 	cors({
 		origin: 'http://localhost:5173',
 		methods: ['GET', 'POST'],
-		credentials: true, // Si estás usando cookies o autenticación
+		credentials: true,
 	}),
 )
 
@@ -35,10 +35,6 @@ io.on('connection', async (socket) => {
 })
 
 app.use(morgan('dev'))
-
-// app.use(corsMiddleware())
-
-// app.use(cors())
 
 server.listen(PORT, () => {
 	console.log(`Port is listening in the port http://localhost:${PORT}`)
