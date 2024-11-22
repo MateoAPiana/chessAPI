@@ -68,7 +68,8 @@ export default async function websocket(
 	socket.on(
 		"end",
 		async (color: string) => {
-			const usersToEmit = users.filter(i => !i.some(j => j.includes(id))).flat()
+			const usersToEmit = users.filter(i => i.some(j => j.includes(id))).flat()
+			console.log({ usersToEmit })
 			socket.to(usersToEmit[0]).emit("winner", color)
 			socket.to(usersToEmit[1]).emit("winner", color)
 		}
