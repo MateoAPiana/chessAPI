@@ -1,8 +1,5 @@
 import cors from 'cors'
 import { ACCEPTED_ORIGINS } from '../constants'
-import dotenv from 'dotenv'
-dotenv.config()
-console.log(process.env.UI_URL)
 
 export const corsMiddleware = ({
 	acceptedOrigins = process.env.UI_URL ? process.env.UI_URL : ACCEPTED_ORIGINS,

@@ -8,11 +8,16 @@ import { createServer } from 'node:http'
 import { ACCEPTED_ORIGINS } from './constants'
 import websocket from './websocket/socket'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 const PORT = process.env.PORT || 3000
 
 const app = express()
 
 const server = createServer(app)
+
+console.log(process.env.UI_URL)
 
 app.use(
 	cors({
@@ -24,7 +29,7 @@ app.use(
 
 const io = new Server(server, {
 	cors: {
-		origin: ACCEPTED_ORIGINS,
+		origin: process.env.UI_URL ? process.env.UI_URL : ACCEPTED_ORIGINS,
 		methods: ['GET', 'POST'],
 		credentials: true,
 	},
