@@ -17,8 +17,6 @@ const app = express()
 
 const server = createServer(app)
 
-console.log(process.env.UI_URL)
-
 app.use(
 	cors({
 		origin: 'http://localhost:5173',
