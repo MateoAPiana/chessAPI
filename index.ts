@@ -1,5 +1,4 @@
 import express from 'express'
-import { corsMiddleware } from './middleware/corsMiddleware'
 import morgan from 'morgan'
 import cors from 'cors'
 
@@ -16,6 +15,8 @@ const PORT = process.env.PORT || 3000
 const app = express()
 
 const server = createServer(app)
+
+console.log(process.env.UI_URL)
 
 app.use(
 	cors({
