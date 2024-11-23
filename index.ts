@@ -18,7 +18,7 @@ const server = createServer(app)
 
 app.use(
 	cors({
-		origin: process.env.UI_URL || ACCEPTED_ORIGINS,
+		origin: ACCEPTED_ORIGINS,
 		methods: ['GET', 'POST'],
 		credentials: true,
 	}),
@@ -26,7 +26,7 @@ app.use(
 
 const io = new Server(server, {
 	cors: {
-		origin: process.env.UI_URL || ACCEPTED_ORIGINS,
+		origin: ACCEPTED_ORIGINS,
 		methods: ['GET', 'POST'],
 		credentials: true,
 	},
