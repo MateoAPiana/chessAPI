@@ -16,11 +16,9 @@ const app = express()
 
 const server = createServer(app)
 
-console.log(process.env.UI_URL)
-
 app.use(
 	cors({
-		origin: 'http://localhost:5173',
+		origin: process.env.UI_URL || ACCEPTED_ORIGINS,
 		methods: ['GET', 'POST'],
 		credentials: true,
 	}),
@@ -28,7 +26,7 @@ app.use(
 
 const io = new Server(server, {
 	cors: {
-		origin: process.env.UI_URL ? process.env.UI_URL : ACCEPTED_ORIGINS,
+		origin: process.env.UI_URL || ACCEPTED_ORIGINS,
 		methods: ['GET', 'POST'],
 		credentials: true,
 	},
